@@ -1084,7 +1084,7 @@ print("Module-level quantities..")
 theta_min, theta_max = 0, 25
 #theta_min, theta_max = 25, 45
 module_size = "large"
-scale_rho_mu = True
+scale_rho_mu = False
 
 # scaling factors as a function of energy
 scaling = {"scaling_mean_ldf": [], "scaling_mean_ldf_err": [],
@@ -1175,13 +1175,13 @@ wmean_scaling = compute_weighted_mean(scaling["scaling_mean_ldf"], scaling["scal
 wmean_scaling_err = standard_error_of_weighted_mean(scaling["scaling_mean_ldf"], scaling["scaling_mean_ldf_err"])
 ax.axhline(y=wmean_scaling, color="b", ls="--", label=f"{wmean_scaling:.2f} +/- {wmean_scaling_err:.2f}")
 
-ax.errorbar(lge_bin_centers, scaling["scaling_rho_wcd"], 
-            yerr=scaling["scaling_rho_wcd_err"], fmt="s", color="orange", mfc="None", alpha=0.9,
-            label=r"$\rho_{\mu}$ vs WCD signal")
+#ax.errorbar(lge_bin_centers, scaling["scaling_rho_wcd"], 
+            #yerr=scaling["scaling_rho_wcd_err"], fmt="s", color="orange", mfc="None", alpha=0.9,
+            #label=r"$\rho_{\mu}$ vs WCD signal")
 
 wmean_scaling_wcd = compute_weighted_mean(scaling["scaling_rho_wcd"],scaling["scaling_rho_wcd_err"])
 wmean_scaling_wcd_err = standard_error_of_weighted_mean(scaling["scaling_rho_wcd"], scaling["scaling_rho_wcd_err"])
-ax.axhline(y=wmean_scaling_wcd, color="orange", ls="-.", label=f"{wmean_scaling_wcd:.2f} +/- {wmean_scaling_wcd_err:.2f}")
+#ax.axhline(y=wmean_scaling_wcd, color="orange", ls="-.", label=f"{wmean_scaling_wcd:.2f} +/- {wmean_scaling_wcd_err:.2f}")
 
 #ax.errorbar(lge_bin_centers, scaling["k_rho_scaling"], 
             #yerr=scaling["k_rho_scaling_err"], fmt="v", color="r", mfc="None", alpha=0.9,

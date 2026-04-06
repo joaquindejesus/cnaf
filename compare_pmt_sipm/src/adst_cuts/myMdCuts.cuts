@@ -1,0 +1,23 @@
+adst cuts version: 1.0
+
+minRecLevel 2               # 0 = no Md event found, 1 = Md has triggered stations, 2 = has MLDF fit 
+minMdLDFStatus 1            # 0 = not reconstructed, 1 = reconstructed
+
+#fixBeta                     # (bool) select events with fix beta (cut or anti-cut)
+
+#minCandidateCounters 5      # minimum number of candidate counters
+#maxCandidateCounters 20     # maximum number of candidate counters
+#minCounters 5               # minimum number of total counters
+#maxCounters 20              # maximum number of total counters
+
+#hasCounter 1764             # select events with counterId
+
+#minZenithMD 0.              # minimum zenith angle [deg] from MD geometry reconstruction
+                            # if there is no MD geometry reconstruction, the event is rejected
+#maxZenithMD 60.             # maximum zenith angle [deg] from MD geometry reconstruction
+                            # if there is no MD geometry reconstruction, the event is rejected
+
+#hottestStationHasCounter    # (bool) select events where the hottest SD station
+                            # is paired to a non-rejected MD counter (cut or anti-cut)
+
+#badPeriodsRejectionFromFile # reject bad periods defined in the file MDBadPeriodsFile in config

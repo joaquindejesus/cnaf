@@ -82,8 +82,12 @@ def plot_core_distributions(df):
     ms = 3
     fig, ax = plt.subplots(1, 1, figsize=(14, 8))
 
-    nevents = len(df["xc"])
-    ax.errorbar(df["xc"], df["yc"], fmt="o", ms=ms, mfc="None", label=f"{nevents} events")
+    try:
+        nevents = len(df["xc"])
+        ax.errorbar(df["xc"], df["yc"], fmt="o", ms=ms, mfc="None", label=f"{nevents} events")
+    except KeyError:
+        nevents = len(df["x_core_UTM_CS"])
+        ax.errorbar(df["x_core_UTM_CS"], df["y_core_UTM_CS"], fmt="o", ms=ms, mfc="None", label=f"{nevents} events")
 
     ax.errorbar(df_infill_tanks["easting"], df_infill_tanks["northing"],
            mfc="None", color="k", ms=12, fmt="o")

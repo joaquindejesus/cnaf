@@ -11,22 +11,22 @@ from myMplStyles import setStyle
 setStyle(False)
 
 ## Parameters - see /cr/data01/joaquin/analysis/data_analysis_pmt_paper_repro/src/adst_cuts/run_cuts.sh
-REJECTSMALL=0
+REJECTSMALL=1
 REJECTCORRIENTES=1
-STRATEGY="Gap"
-NONES=2
-NGAPS=1
-WINDOWSIZE=7
-EFFSMALL=1.04
-#EFFSMALL = 0.94 # this is for infinte window 1x1
-EFFLARGE=0.95
-#EFFLARGE = 0.87 # this is for infinite window 1x1
+STRATEGY="Consecutive"
+NONES=3
+NGAPS=0
+WINDOWSIZE=1024
+#EFFSMALL=1.04
+EFFSMALL = 0.94 # this is for infinte window 1x1
+#EFFLARGE=0.95
+EFFLARGE = 0.87 # this is for infinite window 1x1
 RMIN=200
 MINCOUNTERS=3
 ## PARAMETERS FOR MdLDFFinder
 # Wether to use the LDF parameterization of the PMT paper (LDFSARA=1) or the current LDF model (LDFSARA=0)
 # Note that this will also change the CIC function
-LDFSARA=1
+LDFSARA=0
 FIXBETA=1
 
 parameters_str = (f"strat{STRATEGY}_nOnes{NONES}_nGaps{NGAPS}_wSize{WINDOWSIZE}_rejSmall{REJECTSMALL}_"
@@ -35,14 +35,24 @@ parameters_str = (f"strat{STRATEGY}_nOnes{NONES}_nGaps{NGAPS}_wSize{WINDOWSIZE}_
                 f"ldfSara{LDFSARA}_fixBeta{FIXBETA}")
 
 # Input file name
-fname = ("/storage/gpfs_data/pauger/users/jdejesus/kit/datasets/pmt/reproduced_dataset_2025/csv/"
-        f"events_{parameters_str}.csv")
+basename = f"events_{parameters_str}.csv"
+input_dir = "/storage/gpfs_data/pauger/users/jdejesus/kit/datasets/pmt/reproduced_dataset_2025/csv/"
+fname = os.path.join(input_dir, basename)
+
+if not os.path.isfile(fname):
+    input_dir = "/storage/gpfs_data/pauger/users/jdejesus/analysis/compare_pmt_sipm/outputs/adst_to_csv/"
+    fname = os.path.join(input_dir, basename)
+
+if not os.path.isfile(fname):
+    raise FileNotFoundError(f"{fname} was not found!")
+
+print(f"input file = {fname}")
 
 # defining cuts
 lge_min = 17.3
 lge_max = 18.3
 theta_max = 45
-hottest_sd_in_uc = False
+hottest_sd_in_uc = True
 
 # additional cuts to be put in the titles of the figures
 cuts_title = (f"CUTS: {lge_min:.2f} < lge < {lge_max:.2f}. "

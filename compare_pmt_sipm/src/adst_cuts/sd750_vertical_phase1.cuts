@@ -1,0 +1,19 @@
+ADST cuts version: 1.0
+
+# SD cuts
+!lightning
+
+minRecLevel           3   # see SdRecLevel.h
+maxZenithSD          45.  # maximum zenith angle [deg.]
+T4Trigger             2
+T5Trigger             2   # 1: 5T5 post, 2: 6T5 prior, 3: T5Has
+T5TriggerUB           2   # Phase1 exclusive
+
+
+minLgEnergySD  17.1
+
+badPeriodsRejectionFromFile
+
+#idsFromFile 1
+
+#timeInterval { params: 080731 170101 } # for ecalib, use timeInterval { params: 080731 160101 }

@@ -23,11 +23,16 @@ OUTDICT_KEYS = [
     "event_id", "yymmdd", "hhmmss", "gps_sec",
     "theta", "theta_err", "phi", "cos_theta", "cos_theta_err",
     "lgE", "shower_size", "shower_size_err",
-    "core_site_CS", "core_UTM_CS", "x_SD_err", "y_SD_err", "corr_xy_SD",
+    "x_core_site_CS", "y_core_site_CS", "z_core_site_CS",
+    "x_core_UTM_CS", "y_core_UTM_CS", "z_core_UTM_CS",
+    "x_axis_site_CS", "y_axis_site_CS", "z_axis_site_CS",
+    "x_axis_core_CS", "y_axis_core_CS", "z_axis_core_CS",
+    "x_SD_err", "y_SD_err", "corr_xy_SD",
     "T4_trigg", "T4_trigg_name", "T5_trigg", "hottest_sd_station", "is6T5",
     "beta", "beta_err", "nmu450", "nmu450_err",
     "rho450", "rho450_err", "rho450_cic", "rho450_cic_err",
-    "core_site_CS_md", "core_UTM_CS_md",
+    "x_core_site_CS_md", "y_core_site_CS_md", "z_core_site_CS_md",
+    "x_core_UTM_CS_md", "y_core_UTM_CS_md", "z_core_UTM_CS_md",
     "rec_level", "chi2_ldf", "ldf_like", "ndof", "deviance",
     "is_beta_fixed", "is_core_fixed", "is_md_event_saturated", "isMD6T5",
     "r_hottest", "hottest_counter",
@@ -49,6 +54,12 @@ def extract_sd_info(event):
     s_event = event.GetSDEvent()
     s_shower = s_event.GetSdRecShower()
 
+    core_site_CS = list(s_shower.GetCoreSiteCS())
+    core_UTM_CS = list(s_shower.GetCoreUTMCS())
+
+    axis_site_CS = list(s_shower.GetAxisSiteCS())
+    axis_core_CS = list(s_shower.GetAxisCoreCS())
+
     return dict(
         gps_sec=s_event.GetGPSSecond(),
         sd_rec_level=s_event.GetRecLevel(),
@@ -60,8 +71,18 @@ def extract_sd_info(event):
         cos_theta_err=s_shower.GetCosZenithError(),
         shower_size=s_shower.GetShowerSize(),
         shower_size_err=s_shower.GetShowerSizeError(),
-        core_site_CS=list(s_shower.GetCoreSiteCS()),
-        core_UTM_CS=list(s_shower.GetCoreUTMCS()),
+        x_core_site_CS=core_site_CS[0],
+        y_core_site_CS=core_site_CS[1],
+        z_core_site_CS=core_site_CS[2],
+        x_core_UTM_CS=core_UTM_CS[0],
+        y_core_UTM_CS=core_UTM_CS[1],
+        z_core_UTM_CS=core_UTM_CS[2],
+        x_axis_site_CS=axis_site_CS[0],
+        y_axis_site_CS=axis_site_CS[1],
+        z_axis_site_CS=axis_site_CS[2],
+        x_axis_core_CS=axis_core_CS[0],
+        y_axis_core_CS=axis_core_CS[1],
+        z_axis_core_CS=axis_core_CS[2],
         x_SD_err=s_shower.GetCoreEastingError(),
         y_SD_err=s_shower.GetCoreNorthingError(),
         corr_xy_SD=s_shower.GetCoreNorthingEastingCorrelation(),
@@ -86,6 +107,9 @@ def extract_md_info(event):
 
     hottest_counter = m_event.GetHottestCounter()
 
+    core_site_CS_md = list(md_shower.GetCoreSiteCS())
+    core_UTM_CS_md = list(md_shower.GetCoreUTMCS())
+
     # Access to arbitrary LDF values is obtained with
     # md_shower.TabulatedFunction(r)
 
@@ -98,8 +122,12 @@ def extract_md_info(event):
         rho450_err=md_shower.GetMuDensityError(),
         rho450_cic=md_shower.GetMuDensityCicCorrected(),
         rho450_cic_err=md_shower.GetMuDensityCicCorrectedError(),
-        core_site_CS_md=list(md_shower.GetCoreSiteCS()),
-        core_UTM_CS_md=list(md_shower.GetCoreUTMCS()),
+        x_core_site_CS_md=core_site_CS_md[0],
+        y_core_site_CS_md=core_site_CS_md[1],
+        z_core_site_CS_md=core_site_CS_md[2],
+        x_core_UTM_CS_md=core_UTM_CS_md[0],
+        y_core_UTM_CS_md=core_UTM_CS_md[1],
+        z_core_UTM_CS_md=core_UTM_CS_md[2],
         chi2_ldf=md_shower.GetMLDFChi2(),
         ldf_like=md_shower.GetMLDFLikelihood(),
         ndof=md_shower.GetMLDFNdof(),
