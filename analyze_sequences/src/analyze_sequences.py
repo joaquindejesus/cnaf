@@ -32,7 +32,10 @@ counter_list = os.listdir(gdir)
 for counter in counter_list:
     counter_dir = os.path.join(gdir, counter)
 
-    #if counter != "0688":
+    #if counter not in ["0688", "1760", "1767", "0643"]:
+        #continue
+    
+    #if counter not in ["0093"]:
         #continue
 
     if not os.path.isdir(counter_dir):
@@ -60,8 +63,11 @@ for counter in counter_list:
             df=df
         )
 
+        # Sanity checks
         seq.sanity_checks()
 
+        # Exclusion of bad periods
+        print(" Excluding bad periods..")
         outdir_bp = Path(
             f"/storage/gpfs_data/pauger/users/jdejesus/analysis/analyze_sequences/outputs/{str(counter).zfill(4)}/{module}/bad_periods"
         )
@@ -69,3 +75,45 @@ for counter in counter_list:
 
         seq.exclude_bad_periods(outdir_bp)
 
+        # Various exploratory plots 
+        print("")
+        print(" Producing exploratory plots...")
+        outdir_exp = Path(
+            f"/storage/gpfs_data/pauger/users/jdejesus/analysis/analyze_sequences/outputs/{str(counter).zfill(4)}/{module}/exploratory_plots"
+        )
+        outdir_exp.mkdir(parents=True, exist_ok=True)
+
+        kmax = 5
+
+        seq.exploratory_plots(kmax=kmax, outdir=outdir_exp)
+
+        # Background rate estimation -> we estimate rate_sequences = # sequences / (observation_time)
+        # and rate_muon_pattern = # muon_patterns / (observation_time)
+        # where observation_time is n_events_unique * dt, where dt is the length of the time window (late or early)
+        
+        print("")
+        print(" Producing background rate estimation...")
+        outdir_bkg = Path(
+            f"/storage/gpfs_data/pauger/users/jdejesus/analysis/analyze_sequences/outputs/{str(counter).zfill(4)}/{module}/background"
+        )
+        outdir_bkg.mkdir(parents=True, exist_ok=True)
+
+        seq.estimate_background_rate(outdir=outdir_bkg, isT4=0, isT5=0, kmax=64)
+
+        # Backround P(w) distribution
+        print("")
+        print("Producing P(w) distributions...")
+        seq.estimate_background_prob_distribution(outdir=outdir_bkg)
+
+        # Getin
+        print("")
+        print("Analyzing single sequences...")
+        
+        outdir_est =  Path(
+            f"/storage/gpfs_data/pauger/users/jdejesus/analysis/analyze_sequences/outputs/{str(counter).zfill(4)}/{module}/estimate_ineff"
+        )
+        outdir_est.mkdir(parents=True, exist_ok=True)
+
+        seq.analyze_single_bar_events(lge_min=17.3, outdir=outdir_est)
+
+        
