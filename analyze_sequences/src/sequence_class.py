@@ -223,6 +223,20 @@ class Sequences:
         assert not df_module_empty["eventId"].duplicated().any(), \
             "There are duplicates for module_empty entries!"
 
+    def exclude_silent_stations(self):
+        """
+        Exclude WCD Silent stations in which the UMD trace could not be accessed. These are tagged
+        as module_empty, but we want to restrict "module_empty" to the case in which the WCD triggered
+        and we could inspect the UMD trace, and no positive sample was found.
+        """
+
+        print(f"  c{str(self.counter).zfill(4)}m{self.module} --> len(df) with silent WCD stations = {len(self.df)}")
+
+        self.df = self.df[self.df["wcdTrigger"] != "Silent" ]
+
+        print(f"  c{str(self.counter).zfill(4)}m{self.module} --> len(df) without silent WCD stations = {len(self.df)}")
+
+
     def exclude_bad_periods(self, outdir):
         """
         Identify and remove unstable data-taking periods based on time evolution
@@ -1281,7 +1295,7 @@ class Sequences:
         ax.set_xlabel("Width / (3.125 ns)")
         ax.set_ylabel("Probability")
         ax.legend()
-
+        ax.set_xticks(np.arange(0, 19, step=2))
 
         fig.suptitle((self.label_cuts + ". P(w) for noise windows (conditioned to have a sequence)")) 
 

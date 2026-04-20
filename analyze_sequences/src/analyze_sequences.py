@@ -32,8 +32,8 @@ counter_list = os.listdir(gdir)
 for counter in counter_list:
     counter_dir = os.path.join(gdir, counter)
 
-    #if counter not in ["0688", "1760", "1767", "0643"]:
-        #continue
+    if counter not in ["0688", "1760", "1767", "0643"]:
+        continue
     
     #if counter not in ["0093"]:
         #continue
@@ -65,6 +65,10 @@ for counter in counter_list:
 
         # Sanity checks
         seq.sanity_checks()
+
+        # Excluding silent stations
+        print("Excluding silent stations from the analysis..")
+        seq.exclude_silent_stations()
 
         # Exclusion of bad periods
         print(" Excluding bad periods..")
