@@ -32,10 +32,10 @@ counter_list = os.listdir(gdir)
 for counter in counter_list:
     counter_dir = os.path.join(gdir, counter)
 
-    if counter not in ["0688", "1760", "1767", "0643"]:
-        continue
+    #if counter not in ["0688", "1760", "1767", "0643"]:
+        #continue
     
-    #if counter not in ["0093"]:
+    #if counter not in ["0643"]:
         #continue
 
     if not os.path.isdir(counter_dir):
